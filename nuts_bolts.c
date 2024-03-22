@@ -313,6 +313,24 @@ void delay_sec (float seconds, delaymode_t mode)
     }
 }
 
+// Non-blocking delay function used for general operation and suspend features.
+void delay_msec (float ms, delaymode_t mode)
+{
+    uint_fast16_t i = (uint_fast16_t)ceilf(ms / DWELL_TIME_STEP) + 1;
+
+    while (--i && !sys.abort) {
+        if (mode == DelayMode_Dwell) {
+            protocol_execute_realtime();
+        } else { // DelayMode_SysSuspend
+          // Execute rt_system() only to avoid nesting suspend loops.
+          protocol_exec_rt_system();
+          if (state_door_reopened()) // Bail, if safety door reopens.
+              return;
+        }
+        hal.delay_ms(DWELL_TIME_STEP, NULL); // Delay DWELL_TIME_STEP increment
+    }
+}
+
 
 float convert_delta_vector_to_unit_vector (float *vector)
 {

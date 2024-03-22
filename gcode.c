@@ -3232,7 +3232,7 @@ status_code_t gc_execute_block (char *block)
 
     // [10. Dwell ]:
     if (gc_block.non_modal_command == NonModal_Dwell)
-        mc_dwell(gc_block.values.p);
+        mc_dwell_msec(gc_block.values.p);
 
     // [11. Set active plane ]:
     gc_state.modal.plane_select = gc_block.modal.plane_select;

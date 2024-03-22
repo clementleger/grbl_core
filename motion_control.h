@@ -55,7 +55,10 @@ void mc_thread (plan_line_data_t *pl_data, float *position, gc_thread_data *thre
 status_code_t mc_jog_execute(plan_line_data_t *pl_data, parser_block_t *gc_block, float *position);
 
 // Dwell for a specific number of seconds
-void mc_dwell(float seconds);
+void mc_dwell_sec(float seconds);
+
+// Dwell for a specific number of milliseconds
+void mc_dwell_msec(float milliseconds);
 
 // Perform homing cycle to locate machine zero. Requires limit switches.
 status_code_t mc_homing_cycle(axes_signals_t cycle);

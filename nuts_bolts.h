@@ -223,6 +223,7 @@ bool read_float(char *line, uint_fast8_t *char_counter, float *float_ptr);
 
 // Non-blocking delay function used for general operation and suspend features.
 void delay_sec(float seconds, delaymode_t mode);
+void delay_msec(float seconds, delaymode_t mode);
 
 float convert_delta_vector_to_unit_vector(float *vector);
 

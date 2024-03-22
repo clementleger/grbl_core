@@ -603,7 +603,7 @@ void mc_canned_drill (motion_mode_t motion, float *target, plan_line_data_t *pl_
                 return;
 
             if(canned->dwell > 0.0f)
-                mc_dwell(canned->dwell);
+                mc_dwell_sec(canned->dwell);
 
             if(canned->spindle_off)
                 pl_data->spindle.hal->set_state(pl_data->spindle.hal, (spindle_state_t){0}, 0.0f);
@@ -806,13 +806,18 @@ status_code_t mc_jog_execute (plan_line_data_t *pl_data, parser_block_t *gc_bloc
     return Status_OK;
 }
 
-// Execute dwell in seconds.
-void mc_dwell (float seconds)
+void mc_dwell_msec (float milliseconds)
 {
     if (state_get() != STATE_CHECK_MODE) {
         protocol_buffer_synchronize();
-        delay_sec(seconds, DelayMode_Dwell);
+        delay_msec(milliseconds, DelayMode_Dwell);
     }
+}
+
+// Execute dwell in seconds.
+void mc_dwell_sec (float seconds)
+{
+    mc_dwell_msec(seconds * 1000.0f);
 }
 
 // Perform homing cycle to locate and set machine zero. Only '$H' executes this command.
